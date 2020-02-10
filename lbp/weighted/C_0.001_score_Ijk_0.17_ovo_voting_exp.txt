@@ -1,0 +1,36 @@
+Ijk: 0.1723
+Ij: 0.9941
+Cohen's Kappa: 0.0961
+
+Confusion Matrix:
+
+[24267  6550  5782  7434]
+[1610   87  131  222]
+[ 230  369 2154  467]
+[ 13   2 370   3]
+
+Overall ACC: 0.5335
+
+mean Acc: 0.7688
+mean Recall: 0.3176
+mean Precision: 0.3030
+N:
+
+Sens: 0.5511
+Prec: 0.9291
+Acc: 0.5649
+SVEB:
+
+Sens: 0.0424
+Prec: 0.0124
+Acc: 0.8212
+VEB:
+
+Sens: 0.6689
+Prec: 0.2703
+Acc: 0.8602
+F:
+
+Sens: 0.0077
+Prec: 0.0004
+Acc: 0.8288
