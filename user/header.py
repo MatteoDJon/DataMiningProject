@@ -153,28 +153,39 @@ def R_peaks_extraction(MLII, V1, ANNOTATIONS):
     orig_R_pos = []
 
     # Extract the R-peaks from annotations
-    for a in ANNOTATIONS:
+    for a in annotations:
         aS = a.split()
+            
         pos = int(aS[1])
         originalPos = int(aS[1])
         classAnttd = aS[2]
-
         if pos > size_RR_max and pos < (len(MLII) - size_RR_max):
-            index, value = max(enumerate(MLII[pos - size_RR_max: pos + size_RR_max]), key=operator.itemgetter(1))
+            index, value = max(enumerate(MLII[pos - size_RR_max : pos + size_RR_max]), key=operator.itemgetter(1))
             pos = (pos - size_RR_max) + index
 
-        if classAnttd in MITBIH_classes: # non considero la classe AAMI 'Q' per questo filtro
-            if (pos > winL and pos < (len(MLII) - winR)):
-                beat.append((MLII[pos - winL: pos + winR], V1[pos - winL: pos + winR]))
+        peak_type = 0
+        #pos = pos-1
+        classType=str(classAnttd)
+        classType=classType.replace('b','')
+        classType=classType.replace("'","")
+        if classType in MITBIH_classes:
+            if(pos > winL and pos < (len(MLII) - winR)):
+                beat[r].append( (MLII[pos - winL : pos + winR], V1[pos - winL : pos + winR]))
+                for i in range(0,len(AAMI_classes)):
+                    if classType in AAMI_classes[i]:
+                        class_AAMI = i
+                        break #exit loop
+                    #convert class
+                class_ID[r].append(class_AAMI)
 
-                valid_R = np.append(valid_R, 1)
+                valid_R[r] = np.append(valid_R[r], 1)
             else:
-                valid_R  = np.append(valid_R, 0)
-        else:
-            valid_R = np.append(valid_R, 0)
-
-        R_pos = np.append(R_pos, pos)
-        orig_R_pos = np.append(orig_R_pos, originalPos)
+                valid_R[r] = np.append(valid_R[r], 0)
+         else:
+            valid_R[r] = np.append(valid_R[r], 0)
+            
+         R_poses[r] = np.append(R_poses[r], pos)
+         Original_R_poses[r] = np.append(Original_R_poses[r], originalPos)
 
     return beat, valid_R, R_pos, orig_R_pos
 
