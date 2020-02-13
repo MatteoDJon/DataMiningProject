@@ -4,12 +4,12 @@ import pickle
 from scipy.signal import *
 from features_ECG import *
 
-svm_path1 = ""
-svm_path2 = ""
-svm_path3 = ""
-svm_path4 = ""
+svm_path1 = "ovo_rbf_MLII_rm_bsln_maxRR_normRR_weighted_C_0.001.joblib.pkl"
+svm_path2 = "ovo_rbf_MLII_rm_bsln_maxRR_HOS_weighted_C_0.001.joblib.pkl"
+svm_path3 = "ovo_rbf_MLII_rm_bsln_maxRR_wvlt_weighted_C_0.001.joblib.pkl"
+svm_path4 = "ovo_rbf_MLII_rm_bsln_maxRR_myMorph_weighted_C_0.001.joblib.pkl"
 
-pathDB = "/Users/guido/Desktop/DataMining/mitbih-database/csv"
+pathDB = "C:/Users/Matteo/Desktop/data_mining_prog/mit-bih-database/m_learning/scikit/svm_models/"
 
 MLII_index = 1
 V1_index = 2
@@ -145,6 +145,7 @@ def preprocess_signal(RAW_SIGNAL):
         orig_R_pos = []
 
     return MLII, V1
+'''
 
 def R_peaks_extraction(MLII, V1, ANNOTATIONS):
     beat = []
@@ -188,6 +189,4 @@ def R_peaks_extraction(MLII, V1, ANNOTATIONS):
          Original_R_poses[r] = np.append(Original_R_poses[r], originalPos)
 
     return beat, valid_R, R_pos, orig_R_pos
-
-
-
+'''
