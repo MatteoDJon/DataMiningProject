@@ -1,15 +1,16 @@
 import gc
-import pickle
+import joblib as pickle
+import csv
 
 from scipy.signal import *
 from features_ECG import *
 
-svm_path1 = "ovo_rbf_MLII_rm_bsln_maxRR_normRR_weighted_C_0.001.joblib.pkl"
+svm_path1 = "ovo_rbf_MLII_rm_bsln_maxRR_norm_RR__weighted_C_0.001.joblib.pkl"
 svm_path2 = "ovo_rbf_MLII_rm_bsln_maxRR_HOS_weighted_C_0.001.joblib.pkl"
 svm_path3 = "ovo_rbf_MLII_rm_bsln_maxRR_wvlt_weighted_C_0.001.joblib.pkl"
 svm_path4 = "ovo_rbf_MLII_rm_bsln_maxRR_myMorph_weighted_C_0.001.joblib.pkl"
 
-pathDB = "C:/Users/Matteo/Desktop/data_mining_prog/mit-bih-database/m_learning/scikit/svm_models/"
+pathDB = "C:/Users/Matteo/Desktop/data_mining_prog/db/"
 
 MLII_index = 1
 V1_index = 2
@@ -35,28 +36,28 @@ def load_svm_models():
     AAMI_classes.append(['F'])  # F
 
     print("Loading pickle " + svm_path1 + " of the models ...")
-    f = open( svm_path1, "rb" )
+    f = open( pathDB+"svm_models/"+svm_path1,"rb" )
     gc.disable()
     svm1 = pickle.load(f)
     gc.enable()
     f.close()
 
     print("Loading pickle " + svm_path2 + " of the models ...")
-    f = open( svm_path2, "rb" )
+    f = open( pathDB+"svm_models/"+svm_path2, "rb" )
     gc.disable()
     svm2 = pickle.load(f)
     gc.enable()
     f.close()
 
     print("Loading pickle " + svm_path3 + " of the models ...")
-    f = open( svm_path3, "rb" )
+    f = open( pathDB+"svm_models/"+svm_path3, "rb" )
     gc.disable()
     svm3 = pickle.load(f)
     gc.enable()
     f.close()
 
     print("Loading pickle " + svm_path3 + " of the models ...")
-    f = open( svm_path4, "rb" )
+    f = open( pathDB+"svm_models/"+svm_path4, "rb" )
     gc.disable()
     svm4 = pickle.load(f)
     gc.enable()
@@ -145,7 +146,6 @@ def preprocess_signal(RAW_SIGNAL):
         orig_R_pos = []
 
     return MLII, V1
-'''
 
 def R_peaks_extraction(MLII, V1, ANNOTATIONS):
     beat = []
@@ -154,18 +154,22 @@ def R_peaks_extraction(MLII, V1, ANNOTATIONS):
     orig_R_pos = []
 
     # Extract the R-peaks from annotations
-    for a in annotations:
+    for a in ANNOTATIONS:
         aS = a.split()
             
         pos = int(aS[1])
         originalPos = int(aS[1])
-        classAnttd = aS[2]
         if pos > size_RR_max and pos < (len(MLII) - size_RR_max):
             index, value = max(enumerate(MLII[pos - size_RR_max : pos + size_RR_max]), key=operator.itemgetter(1))
             pos = (pos - size_RR_max) + index
-
         peak_type = 0
         #pos = pos-1
+        if (pos > winL and pos < (len(MLII) - winR)):
+            beat.append((MLII[pos - winL: pos + winR], V1[pos - winL: pos + winR]))
+            valid_R = np.append(valid_R, 1)
+        else:
+            valid_R = np.append(valid_R, 0)
+        '''
         classType=str(classAnttd)
         classType=classType.replace('b','')
         classType=classType.replace("'","")
@@ -184,9 +188,8 @@ def R_peaks_extraction(MLII, V1, ANNOTATIONS):
                 valid_R[r] = np.append(valid_R[r], 0)
          else:
             valid_R[r] = np.append(valid_R[r], 0)
-            
-         R_poses[r] = np.append(R_poses[r], pos)
-         Original_R_poses[r] = np.append(Original_R_poses[r], originalPos)
+         '''
+        R_pos = np.append(R_pos, pos)
+        orig_R_pos = np.append(orig_R_pos, originalPos)
 
     return beat, valid_R, R_pos, orig_R_pos
-'''
