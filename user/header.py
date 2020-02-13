@@ -20,9 +20,11 @@ AAMI_classes = []
 
 size_RR_max = 20
 
+maxRR=True
+
 ### TODO: scegliere come settare i seguenti parametri
-winL = 1
-winR = 1
+winL = 90
+winR = 90
 num_leads = 1
 
 n_intervals = 6
@@ -78,10 +80,10 @@ class my_signal:
 def upload_my_signal( ecg_name ):
     s = my_signal()
 
-    s.RAW_SIGNAL = load_ecg_signal( ecg_name + ".csv")
-    s.MLII, s.V1 = preprocess_signal(s.RAW_SIGNAL)
+    s.RAW_SIGNAL, s.MLII, s.V1 = load_ecg_signal(pathDB+"csv/" +ecg_name + ".csv")
+    s.MLII, s.V1 = preprocess_signal(s.MLII, s.V1)
 
-    s_ann = load_annotation(ecg_name + ".txt", s.RAW_SIGNAL)
+    s_ann = load_annotation(pathDB+"csv/"+ecg_name + "annotations.txt", s.RAW_SIGNAL)
 
     s.beat, s.valid_R, s.R_pos, s.orig_R_pos = R_peaks_extraction(s.MLII, s.V1, s_ann)
 
@@ -91,7 +93,7 @@ def load_ecg_signal( path_to_ecg ):
     # 1. Load signal
 
     # 1.1 data record
-    f = open(path_to_ecg + ".csv", 'rt')
+    f = open(path_to_ecg , 'rt')
     reader = csv.reader(f, delimiter=',')
     next(reader)  # skip first line!
 
@@ -104,12 +106,12 @@ def load_ecg_signal( path_to_ecg ):
         V1.append((int(row[V1_index])))
     f.close()
 
-    RAW_SIGNAL.append(MLII, V1) # copy of the raw signal
+    RAW_SIGNAL.append((MLII, V1)) # copy of the raw signal
 
-    return RAW_SIGNAL
+    return RAW_SIGNAL, MLII, V1
 
 def load_annotation( path_to_ecg, RAW_SIGNAL):
-    f = open(path_to_ecg + ".txt", 'rb')
+    f = open(path_to_ecg , 'rb')
     next(f) # skip first line
 
     annotations = []
@@ -119,9 +121,7 @@ def load_annotation( path_to_ecg, RAW_SIGNAL):
 
     return annotations
 
-def preprocess_signal(RAW_SIGNAL):
-    MLII, V1 = RAW_SIGNAL
-
+def preprocess_signal(MLII, V1):
     # 2. Preprocess the signal
 
     # median_filter1D
@@ -169,26 +169,6 @@ def R_peaks_extraction(MLII, V1, ANNOTATIONS):
             valid_R = np.append(valid_R, 1)
         else:
             valid_R = np.append(valid_R, 0)
-        '''
-        classType=str(classAnttd)
-        classType=classType.replace('b','')
-        classType=classType.replace("'","")
-        if classType in MITBIH_classes:
-            if(pos > winL and pos < (len(MLII) - winR)):
-                beat[r].append( (MLII[pos - winL : pos + winR], V1[pos - winL : pos + winR]))
-                for i in range(0,len(AAMI_classes)):
-                    if classType in AAMI_classes[i]:
-                        class_AAMI = i
-                        break #exit loop
-                    #convert class
-                class_ID[r].append(class_AAMI)
-
-                valid_R[r] = np.append(valid_R[r], 1)
-            else:
-                valid_R[r] = np.append(valid_R[r], 0)
-         else:
-            valid_R[r] = np.append(valid_R[r], 0)
-         '''
         R_pos = np.append(R_pos, pos)
         orig_R_pos = np.append(orig_R_pos, originalPos)
 
