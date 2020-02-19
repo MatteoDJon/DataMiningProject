@@ -13,6 +13,7 @@ from scipy.signal import medfilt
 import scipy.stats
 import pywt
 import operator
+from numpy.polynomial.hermite import  hermfit
 
 from mit_db import *
 
@@ -128,7 +129,7 @@ def compute_hos_descriptor(beat, n_intervals, lag):
     hos_b = np.zeros(( (n_intervals-1) * 2))
     for i in range(0, n_intervals-1):
         pose = (lag * (i+1))
-        interval = beat[(pose -(lag/2) ):(pose + (lag/2))]
+        interval = beat[(pose -(lag//2) ):(pose + (lag//2))]
         
         # Skewness  
         hos_b[i] = scipy.stats.skew(interval, 0, True)
@@ -185,12 +186,12 @@ def compute_LBP(signal, neigh=4):
     # TODO: use some type of average of the data instead the full signal...
     # Average window-5 of the signal?
     #signal_avg = average_signal(signal, avg_win_size)
-    signal_avg = scipy.signal.resample(signal, len(signal) / avg_win_size)
-
-    for i in range(neigh/2, len(signal) - neigh/2):
+    signal_avg = scipy.signal.resample(signal, len(signal) // avg_win_size)
+    for i in range(neigh//2, len(signal) - neigh//2):
         pattern = np.zeros(neigh)
         ind = 0
-        for n in range(-neigh/2,0) + range(1,neigh/2+1):
+        sumList = (list(range(-neigh // 2, 0)) + list(range(1, neigh // 2 + 1)))
+        for n in sumList:
             if signal[i] > signal[i+n]:
                 pattern[ind] = 1          
             ind += 1
