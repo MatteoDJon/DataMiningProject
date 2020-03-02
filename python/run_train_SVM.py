@@ -8,7 +8,8 @@ Mondejar Guerra, Victor M.
 27 Oct 2017
 """
 
-from train_SVM import *
+#from train_SVM import *
+from train_Models import *
 
 # Call different configurations for train_SVM.py 
 
@@ -26,7 +27,7 @@ voting_strategy = 'ovo_voting'  # 'ovo_voting_exp', 'ovo_voting_both'
 use_RR = False
 norm_RR = False
 
-oversamp_method = ''
+oversamp_method = 'SMOTE_regular'
 feature_selection = ''
 do_cross_val = ''
 C_value = 0.001
@@ -48,9 +49,10 @@ for C_value in C_values:
     pca_k = 0
 
     # Single
-    use_RR = False
+    use_RR = True
     norm_RR = False
-    compute_morph = {'u-lbp'} 
+    #compute_morph = {'hbf5'}
+    compute_morph = {'HOS','wvlt','myMorph','lbp'}
     main(multi_mode, 90, 90, do_preprocess, use_weight_class, maxRR, use_RR, norm_RR, compute_morph, oversamp_method, pca_k, feature_selection, do_cross_val, C_value, gamma_value, reduced_DS, leads_flag)
             
     """
