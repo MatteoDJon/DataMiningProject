@@ -36,18 +36,18 @@ def perform_oversampling(oversamp_method, db_path, oversamp_features_name, tr_fe
         if oversamp_method == 'SMOTE':  
             #kind={'borderline1', 'borderline2', 'svm'}
             svm_model = svm.SVC(C=0.001, kernel='rbf', degree=3, gamma='auto', decision_function_shape='ovo')
-            oversamp = SMOTE(ratio='auto', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='svm', svm_estimator=svm_model, n_jobs=1)
+            oversamp = SMOTE(sampling_strategy='auto', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='svm', svm_estimator=svm_model, n_jobs=1)
 
             # PROBAR SMOTE CON OTRO KIND
 
         elif oversamp_method == 'SMOTE_regular_min':
-            oversamp = SMOTE(ratio='minority', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='regular', svm_estimator=None, n_jobs=1)
+            oversamp = SMOTE(sampling_strategy='minority', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='regular', svm_estimator=None, n_jobs=1)
 
         elif oversamp_method == 'SMOTE_regular':
-            oversamp = SMOTE(ratio='auto', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='regular', svm_estimator=None, n_jobs=1)
+            oversamp = SMOTE(sampling_strategy='auto', random_state=None, k_neighbors=5, n_jobs=1)
   
         elif oversamp_method == 'SMOTE_border':
-            oversamp = SMOTE(ratio='auto', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='borderline1', svm_estimator=None, n_jobs=1)
+            oversamp = SMOTE(sampling_strategy='auto', random_state=None, k_neighbors=5, m_neighbors=10, out_step=0.5, kind='borderline1', svm_estimator=None, n_jobs=1)
                  
         # 2 SMOTEENN
         elif oversamp_method == 'SMOTEENN':    
