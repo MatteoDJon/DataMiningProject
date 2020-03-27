@@ -19,7 +19,7 @@ The algorithms selected in this first classification task are:
 5. SVM 
 
 The main problem for classification is that the signals are strongly imbalanced, for this reason the more interesting 
-classifiers would be 2. and 5. for their good performance in case of imbalanced data. Furthmore classifiers have been 
+classifiers would be 2. and 5. for their good performance in case of imbalanced data. Furthermore classifiers have been 
 tested with and without oversampling of the datas, in order to understand if an oversampling technique would be 
 effective in our scope.
 
