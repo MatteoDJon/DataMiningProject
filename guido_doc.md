@@ -7,7 +7,7 @@ In this section it is explaned the classification  flow and the classification r
 At this point the system gives us 2 pair of signals representing the same beats, from MLII and V1, and the correct 
 classifications of them.
 
-In this article has been provided a classification step with five of the more popular classification algorithms avaible. 
+In this article five of the more popular classification algorithms avaible are tested. 
 Two classifier for each algorithm are trained with the MLII and V1 beat-signals, then a voting strategy has been 
 provided  to decide the final classification.
 
