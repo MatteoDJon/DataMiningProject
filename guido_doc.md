@@ -37,6 +37,14 @@ For each algorithm 2 models have been trained with MLII and V1 beats-data; then 
 
 After the creation of the voting model the beats-database has been shuffled and then a 6-fold validation process has been provided: the database consist of 48 ECG signals, so 8 signals in each step are selected as testing set and the other 40 signals as training set, finally the mean of the 6 results has been calculated in order to provide relevant results.
 
+### Algorithms Implementation
+
+All the algorithms used for classification are provided from scikit-learn library from python 3.7 programming language. All the parameters used in the 
+
+### Results
+
+
+
 
 
 
