@@ -13,11 +13,6 @@ from sklearn.feature_selection import SelectPercentile, f_classif, chi2
 from sklearn.linear_model import LassoCV
 from sklearn.feature_selection import mutual_info_classif
 
-svm_path1 = "ovo_rbf_MLII_rm_bsln_maxRR_RR__weighted_C_0.001.joblib.pkl"
-svm_path2 = "ovo_rbf_MLII_rm_bsln_maxRR_HOS_weighted_C_0.001.joblib.pkl"
-svm_path3 = "ovo_rbf_MLII_rm_bsln_maxRR_wvlt_weighted_C_0.001.joblib.pkl"
-svm_path4 = "ovo_rbf_MLII_rm_bsln_maxRR_myMorph_weighted_C_0.001.joblib.pkl"
-
 model_path = "../models_18/info_svm"
 
 pathDB = "../db/"
@@ -51,44 +46,6 @@ def load_model():
     gc.enable()
     f.close()
     return model
-
-def load_svm_models():
-    AAMI_classes.append(['N', 'L', 'R'])  # N
-    AAMI_classes.append(['A', 'a', 'J', 'S', 'e', 'j'])  # SVEB
-    AAMI_classes.append(['V', 'E'])  # VEB
-    AAMI_classes.append(['F'])  # F
-
-    print("Loading pickle " + svm_path1 + " of the models ...")
-    f = open(pathDB + "svm_models/" + svm_path1, "rb")
-    gc.disable()
-    svm1 = pickle.load(f)
-    gc.enable()
-    f.close()
-
-    print("Loading pickle " + svm_path2 + " of the models ...")
-    #f = open(pathDB + "svm_models/" + svm_path2, "rb")
-    f = open("C:/Users/Matteo/Desktop/data_mining_prog/models/F_nb", "rb")
-
-    gc.disable()
-    svm2 = pickle.load(f)
-    gc.enable()
-    f.close()
-
-    print("Loading pickle " + svm_path3 + " of the models ...")
-    f = open(pathDB + "svm_models/" + svm_path3, "rb")
-    gc.disable()
-    svm3 = pickle.load(f)
-    gc.enable()
-    f.close()
-
-    print("Loading pickle " + svm_path4 + " of the models ...")
-    f = open(pathDB + "svm_models/" + svm_path4, "rb")
-    gc.disable()
-    svm4 = pickle.load(f)
-    gc.enable()
-    f.close()
-
-    return svm1, svm2, svm3, svm4
 
 class my_signal:
     def __INIT__(self):
@@ -337,45 +294,19 @@ def features_reduction( tr_features ):
             if s == i: present = True
         if present == False : reduction_indexes.append( i )
 
-    #print("Features scelte = " + str( selection_indexes ) + "\n" )
-    #print("Features eliminate = " + str(reduction_indexes) + "\n")
-
     tr_features = np.delete( tr_features, reduction_indexes  , axis = 1)
-    #print(tr_features.shape)
-    #ts_features = np.delete( ts_features, reduction_indexes  , axis = 1)
+
     return tr_features
 
 def do_prediction(model,features):
 
     features_to_select = features_reduction(features)
 
-    #prediction = model.decision_function(features_to_select)
-    #predict_RR, prob_ovo_RR_sig = ovo_voting_exp(prediction, 4)
     prediction = model.predict(features_to_select)
 
     return prediction
 
 
-'''
-
-def prediction(svm1,svm2,svm3,svm4,tr_features_scaled_RR,tr_features_scaled_HOS,tr_features_scaled_WVLT,tr_features_scaled_MyMorph):
-
-    decision_ovo1 = svm1.decision_function(tr_features_scaled_RR)
-    decision_ovo2 = svm2.decision_function(tr_features_scaled_HOS)
-    decision_ovo3 = svm3.decision_function(tr_features_scaled_WVLT)
-    decision_ovo4 = svm4.decision_function(tr_features_scaled_MyMorph)
-
-    predict_RR, prob_ovo_RR_sig = ovo_voting_exp(decision_ovo1, 4)
-    predict_HOS, prob_ovo_HOS_sig = ovo_voting_exp(decision_ovo2, 4)
-    predict_WVL, prob_ovo_WVL_sig = ovo_voting_exp(decision_ovo3, 4)
-    predict_MyMorph, prob_ovo_MyMorph_sig = ovo_voting_exp(decision_ovo4, 4)
-
-    probs_ensemble = np.stack((prob_ovo_RR_sig, prob_ovo_WVL_sig, prob_ovo_HOS_sig, prob_ovo_MyMorph_sig))
-
-    predictions_prob_rule = basic_rules(probs_ensemble, 0)
-
-    return predictions_prob_rule
-'''
 
 def macro_classes_assignment(assigned_class):
     if(assigned_class>=0 and assigned_class<=2):

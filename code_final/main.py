@@ -68,17 +68,6 @@ def main():
             print("Result Prediction ...")
             printRawPrediction(prediction,ecg_name)
 
-            #features_RR,features_HOS,features_WVL,features_myMorhp=compute_features(signal)
-
-            #tr_features_scaled_RR, tr_features_scaled_HOS, tr_features_scaled_WVLT, tr_features_scaled_MyMorph=fit_features(features_RR,features_HOS,features_WVL,features_myMorhp)
-
-
-            #RR,HOS,WVLT,MyMorph
-
-            #final_pred=prediction(svm1,svm2,svm3,svm4,tr_features_scaled_RR, tr_features_scaled_HOS, tr_features_scaled_WVLT, tr_features_scaled_MyMorph)
-            #printRawPrediction(final_pred,ecg_name)
-
-
         else:
             print("Command not found!")
             print("Application commands are:")
